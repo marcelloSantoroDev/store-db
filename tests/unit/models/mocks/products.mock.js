@@ -18,12 +18,7 @@ const productMock = {
   "name": "Martelo de Thor"
 };
 
-const idNotFoundMock = {
-  "message": "Product not found"
-};
-
 module.exports = {
   allProductsMock,
   productMock,
-  idNotFoundMock,
 }
