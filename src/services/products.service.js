@@ -13,7 +13,19 @@ const getById = async (id) => {
   return { type: null, message: product };
 };
 
+const insert = async ({ name }) => {
+  if (!name) {
+    return { type: 'INVALID_VALUE', message: 'A name must be provided' };
+  }
+
+  const newProductId = await productsModel.insert({ name });
+  const newProduct = await productsModel.getById(newProductId);
+
+  return { type: null, message: newProduct };
+};
+
 module.exports = {
   getAll,
   getById,
+  insert,
 };
