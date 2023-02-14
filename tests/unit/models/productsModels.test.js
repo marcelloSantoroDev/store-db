@@ -24,10 +24,19 @@ describe('testes unitários para a camada model de products', function () {
       const result = await productsModel.getById(1);
       // assert
       expect(result).to.deep.equal(productMock);
-    })
-
+    });
   });
-    afterEach(function () {
+  describe('cadastro de produtos', function () {
+    it('cadastra um produto com sucesso', async function () {
+      // arrange
+      sinon.stub(connection, 'execute').resolves([ { insertId: 1 } ])
+      // act
+      const result = await productsModel.insert({ name: "abajur" })
+      // assert
+      expect(result).to.deep.equal(1);
+    });
+  });
+      afterEach(function () {
     sinon.restore();
-  });
+    });
 });
