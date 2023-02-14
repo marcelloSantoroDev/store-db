@@ -12,9 +12,9 @@ const validateProductName = (name) => {
 };
 
 const productInDbValidation = async (sales) => {
-  const findProduct = await Promise
+  const findProducts = await Promise
     .all(sales.map(({ productId }) => productsModel.getById(productId)));
-  return findProduct.includes(undefined);
+  return findProducts.includes(undefined);
 };
 
 const validadeProductId = async (sales) => {
@@ -23,9 +23,9 @@ const validadeProductId = async (sales) => {
       return { type: 'NOT_FOUND', message: '"productId" is required' };
     }
   }
-  const test = await productInDbValidation(sales);
-
-  if (test) {
+  
+  const thisArrayHasundefined = await productInDbValidation(sales);
+  if (thisArrayHasundefined) {
     return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' };
   }
   
