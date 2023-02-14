@@ -1,4 +1,5 @@
 const { productsModel } = require('../models');
+const schema = require('./validations/validationInputValues');
 
 const getAll = async () => {
   const products = await productsModel.getAll();
@@ -15,7 +16,13 @@ const getById = async (id) => {
 
 const insert = async ({ name }) => {
   if (!name) {
-    return { type: 'INVALID_VALUE', message: 'A name must be provided' };
+    return { type: 'VALUE_NOT_FOUND', message: '"name" is required' };
+  }
+
+  const error = schema.validateProductName(name);
+
+  if (error.type) {
+    return error;
   }
 
   const newProductId = await productsModel.insert({ name });
