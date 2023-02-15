@@ -11,6 +11,8 @@ const {
   requisitionWithoutQuantityMock,
   invalidQuantityMock,
   productNotFoundMock,
+  allSalesResponseMock,
+  salesByIdMock,
 } = require('./mocks/sales.mocks');
 
 describe('testes unitários paraa camada service de sales', function () {
@@ -54,4 +56,34 @@ describe('testes unitários paraa camada service de sales', function () {
       expect(result.message).to.equal('Product not found');
     });
   });
+  describe('listagem de vendas', function () {
+    it('lista todas as vendas com sucesso', async function () {
+      // arrange
+      sinon.stub(salesModel, 'getAll').resolves(allSalesResponseMock);
+      // act
+      const result = await salesService.getAll();
+      // assert
+      expect(result.type).to.equal(null);
+      expect(result.message).to.equal(allSalesResponseMock);
+    });
+    it('lista venda a partir do seu id', async function () {
+      // arrange
+      sinon.stub(salesModel, 'getSaleById').resolves(salesByIdMock);
+      // act
+      const result = await salesService.getSaleById(1);
+      // assert
+      expect(result.type).to.equal(null);
+      expect(result.message).to.deep.equal(salesByIdMock);
+    });
+    it('retorna erro de venda não encontrada', async function () {
+      // act
+      const result = await salesService.getSaleById(999);
+      // assert
+      expect(result.type).to.equal('SALE_NOT_FOUND');
+      expect(result.message).to.equal('Sale not found');
+    });
+  });
+    afterEach(function () {
+    sinon.restore();
+    });
 });

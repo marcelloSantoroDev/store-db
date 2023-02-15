@@ -22,8 +22,6 @@ const getSaleById = async (req, res) => {
     return res.status(404).json({ message });
   }
 
-  console.log(message);
-
   return res.status(200).json(message);
 };
 

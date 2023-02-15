@@ -12,6 +12,8 @@ const {
   requisitionWithoutQuantityMock,
   invalidQuantityMock,
   productNotFoundMock,
+  allSalesResponseMock,
+  salesByIdMock,
 } = require('./mocks/sales.mock');
 
 chai.use(sinonChai);
@@ -117,7 +119,65 @@ describe('testes unitário para a camada controller de sales', function () {
       // assert
       expect(res.status).to.have.been.calledWith(404);
       expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
-    })
+    });
+  });
+  describe('listagem de vendas', function () {
+    it('lista todas as vendas com sucesso', async function () {
+      // arrange
+      const res = {};
+      const req = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(salesService, 'getAll')
+        .resolves({ type: null, message: allSalesResponseMock });
+      
+      // act
+      await salesController.getAll(req, res);
+
+      // assert
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith(allSalesResponseMock);
+    });
+    it('lista venda a partir do seu id', async function () {
+      // arrange
+      const res = {};
+      const req = {
+        params: { id: 1 }
+      };
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(salesService, 'getSaleById')
+        .resolves({ type: null, message: salesByIdMock });
+      // act
+      await salesController.getSaleById(req, res);
+
+      //assert
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith(salesByIdMock);
+
+    });
+     it('retorna erro por causa de venda não encontrada', async function () {
+      // arrange
+      const res = {};
+      const req = {
+        params: { id: 100 }
+      };
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(salesService, 'getSaleById')
+        .resolves({ type: 'SALE_NOT_FOUND', message: 'Sale not found' });
+      // act
+      await salesController.getSaleById(req, res);
+
+      //assert
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith({ message: 'Sale not found' });
+
+    });
   });
       afterEach(function () {
     sinon.restore();
