@@ -174,7 +174,7 @@ describe('testes unitário para a camada controller de sales', function () {
       await salesController.getSaleById(req, res);
 
       //assert
-      expect(res.status).to.have.been.calledWith(200);
+      expect(res.status).to.have.been.calledWith(404);
       expect(res.json).to.have.been.calledWith({ message: 'Sale not found' });
 
     });
