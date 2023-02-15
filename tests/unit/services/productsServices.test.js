@@ -8,6 +8,8 @@ const { allProductsMock, productMock } = require('./mocks/products.mock');
 describe('testes unitários para camada service de products', function () {
   describe('listagem de produtos com sucesso', function () {
     it('lista todos os produtos', async function () {
+      // arrange
+      sinon.stub(productsModel, 'getAll').resolves(allProductsMock);
       // act
       const result = await productsService.getAll();
       // assert
