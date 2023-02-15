@@ -29,6 +29,5 @@ const salesProductsInsert = async (sales) => {
 };
 
 module.exports = {
-  // insert,
   salesProductsInsert,
 };
