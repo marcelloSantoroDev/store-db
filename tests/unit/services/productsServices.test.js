@@ -3,7 +3,7 @@ const sinon = require('sinon');
 
 const { productsModel } = require('../../../src/models');
 const { productsService } = require('../../../src/services');
-const { allProductsMock, productMock } = require('./mocks/products.mock');
+const { allProductsMock, productMock, updatedProductMock, connectionReturnMock } = require('./mocks/products.mock');
 
 describe('testes unitários para camada service de products', function () {
   describe('listagem de produtos com sucesso', function () {
@@ -57,8 +57,20 @@ describe('testes unitários para camada service de products', function () {
       // assert
       expect(result.type).to.equal('INVALID_VALUE');
       expect(result.message).to.deep.equal('"name" length must be at least 5 characters long');
-    })
+    });
   });
+  describe('atualização de produtos', function () {
+    it('atualiza um produto com sucesso', async function () {
+      // arrange
+      // sinon.stub(productsModel, 'getById').resolves(productMock);
+      // sinon.stub(productsModel, 'update').resolves(connectionReturnMock)
+      // act
+      const result = await productsService.update(1, 'abajur');
+      // assert
+      expect(result.type).to.equal(null);
+      expect(result.message).to.deep.equal(updatedProductMock);
+    })
+  })
         afterEach(function () {
     sinon.restore();
     });

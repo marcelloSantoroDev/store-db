@@ -3,7 +3,7 @@ const sinon = require('sinon');
 const { productsModel } = require('../../../src/models');
 const connection = require('../../../src/models/connection');
 
-const { allProductsMock, productMock } = require('./mocks/products.mock');
+const { allProductsMock, productMock, connectionReturnMock } = require('./mocks/products.mock');
 
 describe('testes unitários para a camada model de products', function () {
   describe('listagem de produtos com sucesso', function () {
@@ -36,6 +36,16 @@ describe('testes unitários para a camada model de products', function () {
       expect(result).to.deep.equal(1);
     });
   });
+  describe('atualização de produtos', function () {
+    it('atualiza um produto com sucesso', async function () {
+      // arrange 
+      sinon.stub(connection, 'execute').resolves(connectionReturnMock)
+      // act
+      const result = await productsModel.update({ name: "abajur" })
+      // assert
+      expect(result).to.deep.equal(undefined);
+    })
+  })
       afterEach(function () {
     sinon.restore();
     });

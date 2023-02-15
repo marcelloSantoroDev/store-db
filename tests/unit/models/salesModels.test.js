@@ -61,8 +61,8 @@ describe('testes unitários para camada model de sales', function () {
       const result = await salesModel.getById(1);
       // assert
       expect(result).to.deep.equal({ "id": 1, "date": Date.now() })
-    })
-  })
+    });
+  });
     afterEach(function () {
     sinon.restore();
     });
