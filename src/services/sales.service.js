@@ -28,6 +28,23 @@ const salesProductsInsert = async (sales) => {
   } };
 };
 
+const getAll = async () => {
+  const sales = await salesModel.getAll();
+  return { type: null, message: sales };
+};
+
+const getSaleById = async (id) => {
+  const sale = await salesModel.getSaleById(id);
+  const [saleCheck] = await salesModel.getSaleById(id);
+  if (!saleCheck) {
+    return { type: 'SALE_NOT_FOUND', message: 'Sale not found' };
+  }
+
+  return { type: null, message: sale };
+};
+
 module.exports = {
   salesProductsInsert,
+  getAll,
+  getSaleById,
 };
