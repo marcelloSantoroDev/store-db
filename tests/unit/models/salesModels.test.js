@@ -63,6 +63,46 @@ describe('testes unitários para camada model de sales', function () {
       expect(result).to.deep.equal({ "id": 1, "date": Date.now() })
     });
   });
+  describe('deletando vendas', function () {
+    it('deleta uma venda com sucesso - tabela sales', async function () {
+      // arrange
+      sinon.stub(connection, 'execute')
+        .resolves
+        ([
+          {
+            fieldCount: 0,
+            affectedRows: 1,
+            insertId: 0,
+            info: '',
+            serverStatus: 2,
+            warningStatus: 0
+          }
+        ]);
+      
+      // act
+      const result = await salesModel.deleteSale(1);
+      expect(result).to.equal(undefined);
+    });
+    it('deleta uma venda com sucesso - tabela sales_products', async function () {
+      // arrange
+      sinon.stub(connection, 'execute')
+        .resolves
+        ([
+          {
+            fieldCount: 0,
+            affectedRows: 0,
+            insertId: 0,
+            info: '',
+            serverStatus: 2,
+            warningStatus: 0
+          }
+        ]);
+      
+      // act
+      const result = await salesModel.deleteSaleProduct(1);
+      expect(result).to.equal(undefined);
+    });
+  });
     afterEach(function () {
     sinon.restore();
     });

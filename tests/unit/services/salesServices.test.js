@@ -85,6 +85,46 @@ describe('testes unitários paraa camada service de sales', function () {
       expect(result.message).to.equal('Sale not found');
     });
   });
+  describe('deletando vendas', function () {
+    it('deleta uma venda com sucesso', async function () {
+      // arrange
+      sinon.stub(salesModel, 'deleteSale')
+        .resolves
+        ({
+          fieldCount: 0,
+          affectedRows: 1,
+          insertId: 0,
+          info: '',
+          serverStatus: 2,
+          warningStatus: 0
+        });
+      sinon.stub(salesModel, 'deleteSaleProduct')
+        .resolves
+        ({
+          fieldCount: 0,
+          affectedRows: 0,
+          insertId: 0,
+          info: '',
+          serverStatus: 2,
+          warningStatus: 0
+        });
+      
+      // act
+      const result = await salesService.deleteSale(1)
+
+      // assert
+      expect(result.type).to.equal(null)
+      expect(result.message).to.equal('')
+    });
+    it('retorna erro - venda não encontrada', async function () {
+      // act
+      const result = await salesService.deleteSale(999)
+      
+      // assert
+      expect(result.type).to.equal('SALE_NOT_FOUND')
+      expect(result.message).to.equal('Sale not found')
+    })
+  });
     afterEach(function () {
     sinon.restore();
     });

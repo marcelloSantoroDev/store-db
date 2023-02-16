@@ -179,6 +179,47 @@ describe('testes unitário para a camada controller de sales', function () {
 
     });
   });
+  describe('deletando vendas', function () {
+    it('deletando uma venda com sucesso', async function () {
+      // arrange
+      const res = {};
+      const req = {
+        params: { id: 1 }
+      };
+
+      res.status = sinon.stub().returns(res);
+      res.end = sinon.stub().returns();
+      sinon
+        .stub(salesService, 'deleteSale')
+        .resolves({ type: null, message: '' });
+      
+      // act
+      await salesController.deleteSale(req, res);
+
+      // assert
+      expect(res.status).to.have.been.calledWith(204);
+    })
+      it('retorna erro - venda não encontrada', async function () {
+      // arrange
+      const res = {};
+      const req = {
+        params: { id: 999 }
+      };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(salesService, 'deleteSale')
+        .resolves({ type: 'SALE_NOT_FOUND', message: 'Sale not found' });
+      
+      // act
+      await salesController.deleteSale(req, res);
+
+      // assert
+      expect(res.status).to.have.been.calledWith(404);
+      expect(res.json).to.have.been.calledWith({ message: 'Sale not found' });
+    })
+  })
       afterEach(function () {
     sinon.restore();
   });
