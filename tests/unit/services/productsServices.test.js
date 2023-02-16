@@ -94,7 +94,45 @@ describe('testes unitários para camada service de products', function () {
       // assert
       expect(result.type).to.equal('PRODUCT_NOT_FOUND');
       expect(result.message).to.deep.equal('Product not found');
-    })
+    });
+  });
+  describe('deletando produtos', function () {
+    it('deleta um produto com sucesso', async function () {
+      // arrange
+      sinon.stub(productsModel, 'deleteProduct')
+        .resolves
+  ({
+    fieldCount: 0,
+    affectedRows: 1,
+    insertId: 0,
+    info: '',
+    serverStatus: 2,
+    warningStatus: 0
+  })
+      // act
+      const result = await productsService.deleteProduct(2);
+      // assert
+      expect(result.type).to.equal(null);
+      expect(result.message).to.equal('');
+    });
+        it('retorna erro de produto não encontrado', async function () {
+      // arrange
+      sinon.stub(productsModel, 'deleteProduct')
+        .resolves
+  ({
+    fieldCount: 0,
+    affectedRows: 1,
+    insertId: 0,
+    info: '',
+    serverStatus: 2,
+    warningStatus: 0
+  })
+      // act
+      const result = await productsService.deleteProduct(999);
+      // assert
+      expect(result.type).to.equal('PRODUCT_NOT_FOUND');
+      expect(result.message).to.equal('Product not found');
+    });
   });
         afterEach(function () {
     sinon.restore();

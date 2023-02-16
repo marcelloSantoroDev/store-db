@@ -6,7 +6,8 @@ const sinonChai = require('sinon-chai');
 const { productsController } = require('../../../src/controllers');
 const { productsService } = require('../../../src/services');
 
-const  { allProductsMock, productMock, idNotFoundMock } = require('./mocks/products.mock')
+const  { allProductsMock, productMock, idNotFoundMock } = require('./mocks/products.mock');
+const { productsModel } = require('../../../src/models');
 
 chai.use(sinonChai);
 
@@ -209,6 +210,43 @@ describe('testes unitários da camada controllers de products', function () {
       expect(res.json).to.have.been.calledWith({ message: '"name" length must be at least 5 characters long' });
     });
   });
+  describe('deletando produtos', function () {
+    it('deleta um produto com sucesso', async function () {
+      // arrange
+      const res = {};
+      const req = {
+        params: { id: 2 }
+      };
+
+      res.status = sinon.stub().returns(res);
+      res.end = sinon.stub().returns();
+      sinon
+        .stub(productsService, 'deleteProduct')
+        .resolves({ type: null, message: '' })
+      // act
+      await productsController.deleteProduct(req, res);
+      // assert
+      expect(res.status).to.have.been.calledWith(204);
+    })
+     it('retorna erro - produto não encontrado', async function () {
+      // arrange
+      const res = {};
+      const req = {
+        params: { id: 999 }
+      };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(productsService, 'deleteProduct')
+        .resolves({ type: 'PRODUCT_NOT_FOUND', message: 'Product not found' })
+      // act
+      await productsController.deleteProduct(req, res);
+      // assert
+       expect(res.status).to.have.been.calledWith(404);
+       expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
+    })
+  })
     afterEach(function () {
     sinon.restore();
   });

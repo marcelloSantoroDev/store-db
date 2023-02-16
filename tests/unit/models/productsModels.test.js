@@ -44,8 +44,25 @@ describe('testes unitários para a camada model de products', function () {
       const result = await productsModel.update({ name: "abajur" })
       // assert
       expect(result).to.deep.equal(undefined);
-    })
-  })
+    });
+  });
+  describe('deletando produtos', function () {
+    it('deleta um produto com sucesso', async function () {
+      // arrange
+      sinon.stub(connection, 'execute').resolves([{
+        fieldCount: 0,
+        affectedRows: 1,
+        insertId: 0,
+        info: '',
+        serverStatus: 2,
+        warningStatus: 0
+      }]);
+      // act
+      const result = await productsModel.deleteProduct(2);
+      // assert
+      expect(result).to.equal(undefined);
+    });
+  });
       afterEach(function () {
     sinon.restore();
     });
