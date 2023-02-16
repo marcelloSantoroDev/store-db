@@ -36,9 +36,21 @@ const deleteSale = async (req, res) => {
   return res.status(204).end();
 };
 
+const update = async (req, res) => {
+  const { id } = req.params;
+  const { type, message } = await salesService.update(req.body, id);
+
+  if (type === 'NOT_FOUND') return res.status(400).json({ message });
+  if (type === 'INVALID_QUANTITY') return res.status(422).json({ message });
+  if (type === 'PRODUCT_NOT_FOUND') return res.status(404).json({ message });
+  if (type === 'SALE_NOT_FOUND') return res.status(404).json({ message });
+  return res.status(200).json(message);
+};
+
 module.exports = {
   insert,
   getAll,
   getSaleById,
   deleteSale,
+  update,
 };
