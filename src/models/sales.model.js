@@ -9,6 +9,7 @@ const insert = async () => {
 const getById = async (id) => {
   const query = 'SELECT * FROM sales WHERE ID = ?';
   const [[result]] = await connection.execute(query, [id]);
+  // console.log(result);
   return result;
 };
 
@@ -54,8 +55,7 @@ const deleteSaleProduct = async (id) => {
 const update = async ({ id, productId, quantity }) => {
   const query = `UPDATE sales_products
   SET product_id = ?, quantity = ? WHERE sale_id = ? AND product_id = ?`;
-  const a = await connection.execute(query, [productId, quantity, id, productId]);
-  console.log(a);
+  await connection.execute(query, [productId, quantity, id, productId]);
 };
 
 const updateSaleDate = async (id) => {

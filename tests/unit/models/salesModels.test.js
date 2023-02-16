@@ -57,11 +57,11 @@ describe('testes unitários para camada model de sales', function () {
     });
     it('teste de getById', async function () {
       // arrange
-      sinon.stub(connection, 'execute').resolves([[{ "id": 1, "date": Date.now() }]])
+      sinon.stub(connection, 'execute').resolves([[{ "id": 1, "date": '09121991' }]])
       // act
       const result = await salesModel.getById(1);
       // assert
-      expect(result).to.deep.equal({ "id": 1, "date": Date.now() })
+      expect(result).to.deep.equal({ "id": 1, "date": '09121991' })
     });
   });
   describe('deletando vendas', function () {

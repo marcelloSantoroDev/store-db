@@ -123,6 +123,37 @@ describe('testes unitários paraa camada service de sales', function () {
       // assert
       expect(result.type).to.equal('SALE_NOT_FOUND')
       expect(result.message).to.equal('Sale not found')
+    });
+  });
+  describe('atualizando vendas', function () {
+    it('atualiza venda com sucesso', async function () {
+      // arrange
+      sinon.stub(salesModel, 'getById').resolves({ id: 1, date: '2023-02-16T18:50:28.000Z ' })
+      sinon.stub(salesModel, 'update').resolves
+        (
+          {
+            fieldCount: 0,
+            affectedRows: 0,
+            insertId: 0,
+            info: '',
+            serverStatus: 2,
+            warningStatus: 0
+          }
+        );
+
+      // act
+      const result = await salesService.update(successfullRequisitionMock, 1)
+
+      // assert
+
+      expect(result.type).to.equal(null);
+    });
+    it('retorna erro - venda não encontrada', async function () {
+      // act
+      const result = await salesService.update(successfullRequisitionMock, 999);
+
+      // assert
+      expect(result.type).to.equal('SALE_NOT_FOUND');
     })
   });
     afterEach(function () {
