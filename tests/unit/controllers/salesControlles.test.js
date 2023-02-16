@@ -199,7 +199,7 @@ describe('testes unitário para a camada controller de sales', function () {
       // assert
       expect(res.status).to.have.been.calledWith(204);
     })
-      it('retorna erro - venda não encontrada', async function () {
+    it('retorna erro - venda não encontrada', async function () {
       // arrange
       const res = {};
       const req = {
@@ -218,8 +218,120 @@ describe('testes unitário para a camada controller de sales', function () {
       // assert
       expect(res.status).to.have.been.calledWith(404);
       expect(res.json).to.have.been.calledWith({ message: 'Sale not found' });
+    });
+  });
+  describe('atualizando vendas', function () {
+    it('atualiza uma venda com sucesso', async function () {
+      // arrange
+      const res = {};
+      const req = {
+        params: { id: 1 },
+        body: successfullRequisitionMock,
+      };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      sinon
+        .stub(salesService, 'update')
+        .resolves({ type: null, message: { saleId: 1, itemsUpdated: successfullRequisitionMock } });
+      
+      // act
+      await salesController.update(req, res);
+
+      // assert
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith({ saleId: 1, itemsUpdated: successfullRequisitionMock });
     })
-  })
+    it('retorna erro - productId inexistente', async function () {
+      // arrange
+      const res = {};
+      const req = {
+        params: { id: 1 },
+        body: requisitionWithoutIdMock,
+      };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      sinon
+        .stub(salesService, 'update')
+        .resolves({ type: 'NOT_FOUND', message: '"productId" is required' });
+      
+      // act
+      await salesController.update(req, res);
+
+      // assert
+      expect(res.status).to.have.been.calledWith(400);
+      expect(res.json).to.have.been.calledWith({ message: '"productId" is required' });
+    });
+    it('retorna erro - quantidade inválida', async function () {
+      // arrange
+      const res = {};
+      const req = {
+        params: { id: 1 },
+        body: invalidQuantityMock,
+      };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      sinon
+        .stub(salesService, 'update')
+        .resolves({ type: 'INVALID_QUANTITY', message: '"quantity" must be greater than or equal to 1' });
+      
+      // act
+      await salesController.update(req, res);
+
+      // assert
+      expect(res.status).to.have.been.calledWith(422);
+      expect(res.json).to.have.been.calledWith({ message: '"quantity" must be greater than or equal to 1' });
+    });
+    it('retorna erro - produto não encontrado', async function () {
+      // arrange
+      const res = {};
+      const req = {
+        params: { id: 1 },
+        body: productNotFoundMock,
+      };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      sinon
+        .stub(salesService, 'update')
+        .resolves({ type: 'PRODUCT_NOT_FOUND', message: 'Product not found' });
+      
+      // act
+      await salesController.update(req, res);
+
+      // assert
+      expect(res.status).to.have.been.calledWith(404);
+      expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
+    });
+    it('retorna erro - produto não encontrado', async function () {
+      // arrange
+      const res = {};
+      const req = {
+        params: { id: 999 },
+        body: successfullRequisitionMock,
+      };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      sinon
+        .stub(salesService, 'update')
+        .resolves({ type: 'SALE_NOT_FOUND', message: 'Sale not found' });
+      
+      // act
+      await salesController.update(req, res);
+
+      // assert
+      expect(res.status).to.have.been.calledWith(404);
+      expect(res.json).to.have.been.calledWith({ message: 'Sale not found' });
+    });
+  });
       afterEach(function () {
     sinon.restore();
   });

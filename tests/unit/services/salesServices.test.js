@@ -154,7 +154,34 @@ describe('testes unitários paraa camada service de sales', function () {
 
       // assert
       expect(result.type).to.equal('SALE_NOT_FOUND');
-    })
+    });
+    it('retorna erro - productId não encontrado', async function () {
+      // arrange
+      sinon.stub(salesModel, 'getById').resolves({ id: 1, date: '2023-02-16T18:50:28.000Z ' })
+      // act
+      const result = await salesService.update(requisitionWithoutIdMock, 1);
+
+      // assert
+      expect(result.type).to.equal('NOT_FOUND');
+    });
+    it('retorna erro - produto não encontrado', async function () {
+      // arrange
+      sinon.stub(salesModel, 'getById').resolves({ id: 1, date: '2023-02-16T18:50:28.000Z ' })
+      // act
+      const result = await salesService.update(productNotFoundMock, 1);
+
+      // assert
+      expect(result.type).to.equal('PRODUCT_NOT_FOUND');
+    });
+    it('retorna erro - quantidade inválida', async function () {
+      // arrange
+      sinon.stub(salesModel, 'getById').resolves({ id: 1, date: '2023-02-16T18:50:28.000Z ' })
+      // act
+      const result = await salesService.update(invalidQuantityMock, 1);
+
+      // assert
+      expect(result.type).to.equal('INVALID_QUANTITY');
+    });
   });
     afterEach(function () {
     sinon.restore();
