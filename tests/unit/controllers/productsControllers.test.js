@@ -228,7 +228,7 @@ describe('testes unitários da camada controllers de products', function () {
       // assert
       expect(res.status).to.have.been.calledWith(204);
     })
-     it('retorna erro - produto não encontrado', async function () {
+    it('retorna erro - produto não encontrado', async function () {
       // arrange
       const res = {};
       const req = {
@@ -243,8 +243,32 @@ describe('testes unitários da camada controllers de products', function () {
       // act
       await productsController.deleteProduct(req, res);
       // assert
-       expect(res.status).to.have.been.calledWith(404);
-       expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
+      expect(res.status).to.have.been.calledWith(404);
+      expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
+    });
+  });
+  describe('pesquisando um produto', function () {
+    it('pesquisa um produto com sucesso', async function () {
+      // arrange
+      const res = {};
+      const req = {
+        query: { q: 'Martelo' }
+      };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(productsService, 'search')
+        .resolves({ type: null, message: [{ "id": 1, "name": "Martelo de Thor" }] });
+      
+      // act
+      await productsController.search(req, res);
+
+      // assert
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith([{ "id": 1, "name": "Martelo de Thor" }]);
+
+
     })
   })
     afterEach(function () {

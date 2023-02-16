@@ -63,6 +63,18 @@ describe('testes unitários para a camada model de products', function () {
       expect(result).to.equal(undefined);
     });
   });
+  describe('pesquisando produtos', function () {
+    it('pesquisa um produto com sucesso', async function () {
+      // arrange
+      sinon.stub(connection, 'execute').resolves([[{ "id": 1, "name": "Martelo de Thor" }]]);
+
+      // act
+      const result = await productsModel.search('Martelo');
+
+      // assert
+      expect(result).to.deep.equal([{ "id": 1, "name": "Martelo de Thor" }]);
+    })
+  })
       afterEach(function () {
     sinon.restore();
     });

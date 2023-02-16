@@ -134,6 +134,26 @@ describe('testes unitários para camada service de products', function () {
       expect(result.message).to.equal('Product not found');
     });
   });
+  describe('pesquisando produtos', function () {
+    it('pesquisa um produto com sucesso', async function () {
+      // assert
+      sinon.stub(productsModel, 'search').resolves([{ "id": 1, "name": "Martelo de Thor" }]);
+      // act
+      const result = await productsService.search('Martelo');
+
+      // assert
+      expect(result.type).to.equal(null);
+    });
+    it('retorna todos os produtos se a pesquisa estiver vazia', async function () {
+      // assert
+      sinon.stub(productsModel, 'search').resolves(allProductsMock);
+      // act
+      const result = await productsService.search('');
+
+      // assert
+      expect(result.type).to.equal(null);
+    });
+  });
         afterEach(function () {
     sinon.restore();
     });
