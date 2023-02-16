@@ -205,8 +205,8 @@ describe('testes unitários da camada controllers de products', function () {
       // act
       await productsController.update(req, res);
       // assert
-      expect(res.status).to.have.been.calledWith(404);
-      expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
+      expect(res.status).to.have.been.calledWith(422);
+      expect(res.json).to.have.been.calledWith({ message: '"name" length must be at least 5 characters long' });
     });
   });
     afterEach(function () {
