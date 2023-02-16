@@ -35,6 +35,8 @@ describe('testes unitários paraa camada service de sales', function () {
       expect(result.message).to.equal('"productId" is required');
     });
     it('retorna erro por falta do campo quantity', async function () {
+      // arrange
+      sinon.stub(salesModel, 'salesProductsInsert').resolves(null);
       // act
       const result = await salesService.salesProductsInsert(requisitionWithoutQuantityMock);
       // assert

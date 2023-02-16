@@ -2,10 +2,12 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 
 const { productsModel } = require('../../../src/models');
+const connection = require('../../../src/models/connection');
 const { productsService } = require('../../../src/services');
 const { allProductsMock, productMock, updatedProductMock, connectionReturnMock } = require('./mocks/products.mock');
 
 describe('testes unitários para camada service de products', function () {
+
   describe('listagem de produtos com sucesso', function () {
     it('lista todos os produtos', async function () {
       // arrange
@@ -17,11 +19,13 @@ describe('testes unitários para camada service de products', function () {
       expect(result.message).to.deep.equal(allProductsMock);
     });
     it('lista produto a partir do seu id', async function () {
+      // arrange
+      sinon.stub(productsModel, 'getById').resolves({ "id": 2, "name": "Traje de encolhimento" })
       // act
-      const result = await productsService.getById(1);
+      const result = await productsService.getById(2);
       // assert
       expect(result.type).to.equal(null);
-      expect(result.message).to.deep.equal(productMock);
+      expect(result.message).to.deep.equal({"id": 2, "name": "Traje de encolhimento" });
     });
   });
   describe('listagem de produtos com erro', function () {
@@ -79,7 +83,7 @@ describe('testes unitários para camada service de products', function () {
     });
     it('retorna erro - name inválido', async function () {
       // act
-      const result = await productsService.update(1, 'a');
+      const result = await productsService.update(2, 'a');
       // assert
       expect(result.type).to.equal('INVALID_VALUE');
       expect(result.message).to.deep.equal('"name" length must be at least 5 characters long');

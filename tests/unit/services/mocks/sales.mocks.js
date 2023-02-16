@@ -2,7 +2,7 @@ const successfullResponseMock = {
   "id": 4,
   "itemsSold": [
     {
-      "productId": 1,
+      "productId": 2,
       "quantity": 1
     },
     {
@@ -14,7 +14,7 @@ const successfullResponseMock = {
 
 const successfullRequisitionMock = [
   {
-    "productId": 1,
+    "productId": 2,
     "quantity": 1
   },
   {
@@ -25,7 +25,7 @@ const successfullRequisitionMock = [
 
 const requisitionWithoutIdMock = [
   {
-    "quantity": 1
+    "quantity": 2
   },
   {
     "productId": 2,
@@ -35,7 +35,7 @@ const requisitionWithoutIdMock = [
 
 const requisitionWithoutQuantityMock = [
   {
-    "productId": 1
+    "productId": 2
   },
   {
     "productId": 2,
@@ -45,7 +45,7 @@ const requisitionWithoutQuantityMock = [
 
 const invalidQuantityMock = [
   {
-    "productId": 1,
+    "productId": 2,
     "quantity": 0
   },
   {
