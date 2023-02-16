@@ -14,6 +14,7 @@ const {
   modelInputMock,
   allSalesResponseMock,
   salesByIdMock,
+  updateSaleConnectionResponseMock,
 } = require('./mocks/sales.mock');
 
 describe('testes unitários para camada model de sales', function () {
@@ -100,6 +101,25 @@ describe('testes unitários para camada model de sales', function () {
       
       // act
       const result = await salesModel.deleteSaleProduct(1);
+      // assert
+      expect(result).to.equal(undefined);
+    });
+  });
+  describe('atualizando vendas', function () {
+    it('atualiza uma venda com sucesso - tabela sales_products', async function () {
+      // arrange
+      sinon.stub(connection, 'execute').resolves(updateSaleConnectionResponseMock)
+      // act
+      const result = await salesModel.update({ id: 1, productId: 1, quantity: 10 });
+      // assert
+      expect(result).to.equal(undefined);
+    });
+    it('atualiza uma venda com sucesso - tabela sales', async function () {
+      // arrange
+      sinon.stub(connection, 'execute').resolves(updateSaleConnectionResponseMock)
+      // act
+      const result = await salesModel.updateSaleDate(1);
+      // assert
       expect(result).to.equal(undefined);
     });
   });

@@ -48,14 +48,14 @@ const deleteSale = async (id) => {
 
 const deleteSaleProduct = async (id) => {
   const query = 'DELETE FROM sales_products WHERE sale_id = ?';
-  const result = await connection.execute(query, [id]);
-  console.log(result);
+  await connection.execute(query, [id]);
 };
 
 const update = async ({ id, productId, quantity }) => {
   const query = `UPDATE sales_products
   SET product_id = ?, quantity = ? WHERE sale_id = ? AND product_id = ?`;
-  await connection.execute(query, [productId, quantity, id, productId]);
+  const a = await connection.execute(query, [productId, quantity, id, productId]);
+  console.log(a);
 };
 
 const updateSaleDate = async (id) => {
