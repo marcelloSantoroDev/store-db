@@ -53,7 +53,8 @@ const deleteSaleProduct = async (id) => {
 };
 
 const update = async ({ id, productId, quantity }) => {
-  const query = 'UPDATE sales_products SET product_id = ?, quantity = ? WHERE sale_id = ? AND product_id = ?';
+  const query = `UPDATE sales_products
+  SET product_id = ?, quantity = ? WHERE sale_id = ? AND product_id = ?`;
   await connection.execute(query, [productId, quantity, id, productId]);
 };
 
