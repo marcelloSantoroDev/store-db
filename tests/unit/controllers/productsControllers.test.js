@@ -131,6 +131,84 @@ describe('testes unitários da camada controllers de products', function () {
       expect(res.json).to.have.been.calledWith({ "message": '"name" length must be at least 5 characters long' });
     });
   });
+  describe('atualização de produtos', function () {
+    it('atualiza um produto com sucesso', async function () {
+      // arrange
+      const res = {};
+      const req = {
+        params: { id: 1 },
+        body: { name: 'abajur' }
+      };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(productsService, 'update')
+        .resolves({ type: null, message: { id: 1, name: 'abajur' } });
+      // act
+      await productsController.update(req, res);
+      // assert
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith({ id: 1, name: 'abajur' });
+    });
+     it('retorna erro - campo name inexistente', async function () {
+      // arrange
+      const res = {};
+      const req = {
+        params: { id: 1 },
+        body: { name: ''}
+      };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(productsService, 'update')
+        .resolves({ type: 'VALUE_NOT_FOUND', message: '"name" is required' });
+      // act
+      await productsController.update(req, res);
+      // assert
+      expect(res.status).to.have.been.calledWith(400);
+      expect(res.json).to.have.been.calledWith({ message: '"name" is required' });
+     });
+    it('retorna erro - produto não encontrado', async function () {
+      // arrange
+      const res = {};
+      const req = {
+        params: { id: 999 },
+        body: { name: 'abajur'}
+      };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(productsService, 'update')
+        .resolves({ type: 'PRODUCT_NOT_FOUND', message: 'Product not found' });
+      // act
+      await productsController.update(req, res);
+      // assert
+      expect(res.status).to.have.been.calledWith(404);
+      expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
+    });
+    it('retorna erro - campo name inválido', async function () {
+      // arrange
+      const res = {};
+      const req = {
+        params: { id: 1 },
+        body: { name: 'a'}
+      };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(productsService, 'update')
+        .resolves({ type: 'INVALID_VALUE', message: '"name" length must be at least 5 characters long' });
+      // act
+      await productsController.update(req, res);
+      // assert
+      expect(res.status).to.have.been.calledWith(404);
+      expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
+    });
+  });
     afterEach(function () {
     sinon.restore();
   });

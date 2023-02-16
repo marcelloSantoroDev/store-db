@@ -27,9 +27,9 @@ const insert = async (req, res) => {
     return res.status(422).json({ message });
   }
 
-  if (type === 'PRODUCT_NOT_FOUND') {
-    return res.status(404).json({ message });
-  }
+  // if (type === 'PRODUCT_NOT_FOUND') {
+  //   return res.status(404).json({ message });
+  // }
 
   return res.status(201).json(message);
 };

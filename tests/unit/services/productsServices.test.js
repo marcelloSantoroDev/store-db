@@ -62,15 +62,36 @@ describe('testes unitários para camada service de products', function () {
   describe('atualização de produtos', function () {
     it('atualiza um produto com sucesso', async function () {
       // arrange
-      // sinon.stub(productsModel, 'getById').resolves(productMock);
-      // sinon.stub(productsModel, 'update').resolves(connectionReturnMock)
+      sinon.stub(productsModel, 'getById').resolves(productMock);
+      sinon.stub(productsModel, 'update').resolves(connectionReturnMock)
       // act
       const result = await productsService.update(1, 'abajur');
       // assert
       expect(result.type).to.equal(null);
       expect(result.message).to.deep.equal(updatedProductMock);
+    });
+    it('retorna erro - campo name inexistente', async function () {
+      // act
+      const result = await productsService.update(1, '');
+      // assert
+      expect(result.type).to.equal('VALUE_NOT_FOUND');
+      expect(result.message).to.deep.equal('"name" is required');
+    });
+    it('retorna erro - name inválido', async function () {
+      // act
+      const result = await productsService.update(1, 'a');
+      // assert
+      expect(result.type).to.equal('INVALID_VALUE');
+      expect(result.message).to.deep.equal('"name" length must be at least 5 characters long');
+    });
+    it('retorna erro - produto não encontrado', async function () {
+      // act
+      const result = await productsService.update(100, 'abajur');
+      // assert
+      expect(result.type).to.equal('PRODUCT_NOT_FOUND');
+      expect(result.message).to.deep.equal('Product not found');
     })
-  })
+  });
         afterEach(function () {
     sinon.restore();
     });
