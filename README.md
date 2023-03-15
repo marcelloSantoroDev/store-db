@@ -1,13 +1,9 @@
-# :construction: README customizado em construção ! :construction:
-<!-- Olá, Tryber!
-Esse é apenas um arquivo inicial para o README do seu projeto no qual você pode customizar e reutilizar todas as vezes que for executar o trybe-publisher.
+# Store DB
+### Este repositório é um exemplo de implementação de um banco de dados para uma loja virtual, utilizando a linguagem SQL. O objetivo principal é demonstrar a modelagem de um banco de dados para o gerenciamento de produtos, pedidos e clientes em uma loja virtual.
 
-Para deixá-lo com a sua cara, basta alterar o seguinte arquivo da sua máquina: ~/.student-repo-publisher/custom/_NEW_README.md
+### O banco de dados contém as seguintes tabelas:
 
-É essencial que você preencha esse documento por conta própria, ok?
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
-:warning: IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
--->
+- #### Products: contém informações sobre os produtos da loja, incluindo nome, descrição, preço e estoque.
+- #### Customers: contém informações sobre os clientes, como nome, e-mail e endereço.
+- #### Orders: contém informações sobre os pedidos dos clientes, incluindo a data do pedido, o cliente que fez o pedido e o status do pedido.
+- #### Order_items: contém informações sobre os itens que fazem parte de um pedido, incluindo o produto, a quantidade e o preço unitário.
